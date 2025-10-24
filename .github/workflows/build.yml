@@ -1,0 +1,48 @@
+---
+name: Build & Publish VSCode Extension
+permissions:
+  contents: write
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: npm ci || npm install
+      - name: Get version
+        id: version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "tag=$VERSION" >> $GITHUB_OUTPUT
+      - name: Package extension
+        run: npx vsce package
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpm-spec-lsp-vscode
+          path: ./*.vsix
+      - name: Create GitHub Release
+        if: github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.tag }}
+          name: Release v${{ steps.version.outputs.tag }}
+          body: Автоматическая сборка
+          files: ./*.vsix
+      - name: Publish to Marketplace
+        if: github.ref == 'refs/heads/main'
+        run: |-
+          if [ -n "${{ secrets.VSCE_TOKEN }}" ]; then
+            npx vsce publish -p ${{ secrets.VSCE_TOKEN }}
+          else
+            echo "VSCE_TOKEN не задан — пропускаем публикацию"
+          fi

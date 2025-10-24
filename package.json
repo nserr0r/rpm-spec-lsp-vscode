@@ -1,0 +1,73 @@
+{
+	"name": "rpm-spec-lsp-vscode",
+	"displayName": "RPM SPEC Language Server Client",
+	"description": "Клиент для rpm-spec-lsp: подключает LSP сервер и обеспечивает поддержку RPM SPEC файлов в VS Code.",
+	"version": "0.0.2",
+	"publisher": "nserr0r",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/nserr0r/rpm-spec-lsp-vscode"
+	},
+	"bugs": {
+		"url": "https://github.com/nserr0r/rpm-spec-lsp-vscode/issues"
+	},
+	"author": {
+		"name": "nserr0r"
+	},
+	"pricing": "Free",
+	"icon": "images/icon.png",
+	"license": "Apache-2.0",
+	"engines": {
+		"vscode": "^1.80.0"
+	},
+	"categories": [
+		"Linters",
+		"Programming Languages"
+	],
+	"activationEvents": [
+		"onLanguage:spec"
+	],
+	"main": "./extension.js",
+	"contributes": {
+		"languages": [
+			{
+				"id": "spec",
+				"aliases": [
+					"RPM Spec"
+				],
+				"extensions": [
+					".spec"
+				]
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "RPM Spec LSP Client",
+			"properties": {
+				"rpm-spec-lsp.path": {
+					"type": "string",
+					"default": "rpm-spec-lsp",
+					"description": "Путь к бинарю rpm-spec-lsp (если не в $PATH)."
+				},
+				"rpm-spec-lsp.args": {
+					"type": "array",
+					"default": [],
+					"description": "Дополнительные аргументы при запуске rpm-spec-lsp."
+				},
+				"rpm-spec-lsp.trace.server": {
+					"type": "string",
+					"enum": [
+						"off",
+						"messages",
+						"verbose"
+					],
+					"default": "off",
+					"description": "Уровень логирования сообщений LSP сервера."
+				}
+			}
+		}
+	},
+	"dependencies": {
+		"vscode-languageclient": "^9.0.0"
+	}
+}
