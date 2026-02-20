@@ -2,7 +2,7 @@
 	"name": "rpm-spec-lsp-vscode",
 	"displayName": "RPM SPEC Language Server Client",
 	"description": "Клиент для rpm-spec-lsp: подключает LSP сервер и обеспечивает поддержку RPM SPEC файлов в VS Code.",
-	"version": "0.0.2",
+	"version": "0.1.1",
 	"publisher": "nserr0r",
 	"repository": {
 		"type": "git",
